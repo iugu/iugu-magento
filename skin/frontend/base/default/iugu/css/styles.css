@@ -1,0 +1,5 @@
+.iugu-payment-icons { font-size: 1px; }
+.iugu-payment-icons li { background: url(../images/icons.png) no-repeat; margin: 0 !important; width: 51px; height: 32px; display: inline-block; }
+.iugu-payment-icons li span { display: none; }
+.iugu-payment-icons li.boleto { background-position: -51px 0; }
+.iugu-payment-icons li.boleto.on { background-position: 0 0; }

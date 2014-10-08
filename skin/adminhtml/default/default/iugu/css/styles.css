@@ -1,0 +1,10 @@
+/**
+ *
+ * @category   Inovarti
+ * @package    Inovarti_Iugu
+ * @author     Suporte <suporte@inovarti.com.br>
+ */
+
+.iugu-status { color: #eb5e00; }
+.iugu-status.paid { color: #147C25; }
+.iugu-invoice-view-content { padding: 14px; }

@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category   Inovarti
+ * @package    Inovarti_Iugu
+ * @author     Suporte <suporte@inovarti.com.br>
+ */
+-->
+
+<layout>
+    <!-- Iugu Checkokut Handle -->
+    <iugu_checkout_handle>
+        <reference name="head">
+            <action method="addCss"><stylesheet>iugu/css/styles.css</stylesheet></action>
+        </reference>
+    </iugu_checkout_handle>
+
+    <checkout_onepage_index>
+        <update handle="iugu_checkout_handle"/>
+    </checkout_onepage_index>
+
+    <onepagecheckout_index_index>
+        <update handle="iugu_checkout_handle"/>
+    </onepagecheckout_index_index>
+
+    <opc_index_index>
+        <update handle="iugu_checkout_handle"/>
+    </opc_index_index>
+
+    <aw_onestepcheckout_index_index>
+        <update handle="iugu_checkout_handle"/>
+    </aw_onestepcheckout_index_index>
+
+    <!-- Iugu Checkout Handle -->
+    <iugu_checkout_success_handle>
+        <reference name="checkout.success">
+            <block type="iugu/checkout_success_payment" name="iugu_checkout_success_payment">
+                <action method="addPaymentRender"><type>iugu_boleto</type><block>iugu/checkout_success_payment_boleto</block><template>iugu/checkout/success/payment/boleto.phtml</template></action>
+            </block>
+        </reference>
+    </iugu_checkout_success_handle>
+
+    <checkout_onepage_success>
+        <update handle="iugu_checkout_success_handle"/>
+    </checkout_onepage_success>
+
+    <onepagecheckout_index_success>
+        <update handle="iugu_checkout_success_handle"/>
+    </onepagecheckout_index_success>
+</layout>
