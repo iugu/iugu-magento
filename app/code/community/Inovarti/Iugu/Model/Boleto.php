@@ -65,8 +65,9 @@ class Inovarti_Iugu_Model_Boleto extends Mage_Payment_Model_Method_Abstract
 
         // iugu info
         $payment->setIuguInvoiceId($result->getInvoiceId())
-            ->setIuguBoletoUrl($result->getUrl())
-            ->setIuguBoletoPdf($result->getPdf());
+            ->setIuguUrl($result->getUrl())
+            ->setIuguPdf($result->getPdf())
+        ;
 
         return $this;
     }

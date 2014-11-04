@@ -14,6 +14,13 @@
         </Inovarti_Iugu>
     </modules>
     <global>
+        <fieldsets>
+            <sales_convert_quote_payment>
+                <iugu_token><to_order_payment>*</to_order_payment></iugu_token>
+                <installments><to_order_payment>*</to_order_payment></installments>
+                <installment_description><to_order_payment>*</to_order_payment></installment_description>
+            </sales_convert_quote_payment>
+        </fieldsets>
         <models>
             <iugu>
                 <class>Inovarti_Iugu_Model</class>
@@ -51,6 +58,15 @@
             </iugu>
         </helpers>
         <payment>
+            <cc>
+                <types>
+                    <DC>
+                        <code>DC</code>
+                        <name>Diners Club</name>
+                        <order>60</order>
+                    </DC>
+                </types>
+            </cc>
             <groups>
                 <iugu>Iugu</iugu>
             </groups>
@@ -73,6 +89,16 @@
                 </iugu>
             </updates>
         </layout>
+        <events>
+            <core_block_abstract_to_html_after>
+                <observers>
+                    <iugu_observer>
+                        <class>iugu/observer</class>
+                        <method>addJs</method>
+                    </iugu_observer>
+                </observers>
+            </core_block_abstract_to_html_after>
+        </events>
     </frontend>
     <adminhtml>
         <translate>
@@ -117,6 +143,20 @@
                 <sort_order>1</sort_order>
                 <group>iugu</group>
             </iugu_boleto>
+            <iugu_cc>
+                <active>0</active>
+                <model>iugu/cc</model>
+                <title>Cartão de Crédito</title>
+                <order_status>processing</order_status>
+                <cctypes>VI,MC,AE,DC</cctypes>
+                <max_installments>12</max_installments>
+                <min_installment_value>20</min_installment_value>
+                <max_installments_without_interest>5</max_installments_without_interest>
+                <payment_action>authorize_capture</payment_action>
+                <allowspecific>0</allowspecific>
+                <sort_order>2</sort_order>
+                <group>iugu</group>
+            </iugu_cc>
         </payment>
     </default>
 </config>

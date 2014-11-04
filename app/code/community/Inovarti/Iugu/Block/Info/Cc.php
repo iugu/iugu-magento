@@ -5,12 +5,12 @@
  * @package    Inovarti_Iugu
  * @author     Suporte <suporte@inovarti.com.br>
  */
-class Inovarti_Iugu_Block_Info_Boleto extends Mage_Payment_Block_Info
+class Inovarti_Iugu_Block_Info_Cc extends Mage_Payment_Block_Info
 {
     protected function _construct()
     {
         parent::_construct();
-        $this->setTemplate('iugu/info/boleto.phtml');
+        $this->setTemplate('iugu/info/cc.phtml');
     }
 
     /**
@@ -21,11 +21,19 @@ class Inovarti_Iugu_Block_Info_Boleto extends Mage_Payment_Block_Info
         return $this->getInfo()->getIuguInvoiceId();
     }
 
-   /**
+    /**
      * @return string
      */
-    public function getInvoiceUrl()
+    public function getInstallments()
     {
-        return $this->getInfo()->getIuguPdf();
+        return $this->getInfo()->getInstallments();
+    }
+
+    /**
+     * @return string
+     */
+    public function getInstallmentDescription()
+    {
+        return $this->getInfo()->getInstallmentDescription();
     }
 }

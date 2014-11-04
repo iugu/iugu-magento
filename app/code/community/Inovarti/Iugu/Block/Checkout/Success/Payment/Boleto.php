@@ -7,8 +7,8 @@
  */
 class Inovarti_Iugu_Block_Checkout_Success_Payment_Boleto extends Inovarti_Iugu_Block_Checkout_Success_Payment_Default
 {
-    public function getBoletoUrl()
+    public function getInvoiceUrl()
     {
-        return $this->getPayment()->getIuguBoletoPdf();
+        return $this->getPayment()->getIuguPdf();
     }
 }

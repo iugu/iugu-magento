@@ -1,0 +1,16 @@
+<?php
+/**
+ * @category    Inovarti
+ * @package     Inovarti_Iugu
+ * @copyright   Copyright (c) 2014 Inovarti. (http://www.inovarti.com.br)
+ */
+?>
+<script type="text/javascript" src="https://js.iugu.com/v2"></script>
+<script type="text/javascript" src="<?php echo $this->getJsUrl('iugu/prototype/validation.js') ?>"></script>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('iugu/js/checkout.js') ?>"></script>
+<script type="text/javascript">
+    Iugu.setAccountID('<?php echo $this->helper('iugu')->getAccountId(); ?>');
+    <?php if($this->helper('iugu')->getMode() == Inovarti_Iugu_Model_Source_Mode::MODE_TEST): ?>
+    Iugu.setTestMode(true);
+    <?php endif ?>
+</script>

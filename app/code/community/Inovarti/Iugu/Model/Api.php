@@ -11,6 +11,7 @@ class Inovarti_Iugu_Model_Api
     const ENDPOINT  = 'https://api.iugu.com';
 
     const PAYMENT_METHOD_BOLETO = 'bank_slip';
+    const PAYMENT_METHOD_CREDIT_CARD = 'credit_card';
 
     const INVOICE_STATUS_DRAFT              = 'draft';
     const INVOICE_STATUS_PENDING            = 'pending';
@@ -77,6 +78,18 @@ class Inovarti_Iugu_Model_Api
     }
 
     /**
+     * Refund a previously captured invoice
+     *
+     * @param int $id
+     * @return Varien_Object
+     */
+    public function refund($id)
+    {
+        $response = $this->request($this->getRefundUrl($id), null, Zend_Http_Client::POST);
+        return $response;
+    }
+
+    /**
      * Send the HTTP request and return an HTTP response object
      *
      * @param string $url
@@ -137,6 +150,18 @@ class Inovarti_Iugu_Model_Api
     public function getInvoiceUrl($id)
     {
         $url = $this->getBaseUrl() . '/invoices/' . $id;
+        return $url;
+    }
+
+    /**
+     * Retrieve refund URL
+     *
+     * @param string $id
+     * @return string
+     */
+    public function getRefundUrl($id)
+    {
+        $url = $this->getBaseUrl() . '/invoices/' . $id . '/refund';
         return $url;
     }
 

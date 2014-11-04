@@ -13,5 +13,5 @@
 <br />
 <?php echo $this->__('Invoice') ?>: <a href="#" onclick="return Iugu.load('<?php echo $this->getUrl('adminhtml/iugu_invoice/view', array('id' => $this->getInvoiceId())) ?>');"><?php echo $this->escapeHtml($this->getInvoiceId()) ?></a>
 <br />
-<a href="<?php echo $this->getBoletoUrl() ?>" target="_blank"><?php echo $this->__('Click here to print your Boleto') ?></a>
+<a href="<?php echo $this->getInvoiceUrl() ?>" target="_blank"><?php echo $this->__('Click here to print your Boleto') ?></a>
 <?php endif ?>
