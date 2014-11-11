@@ -85,6 +85,9 @@
             </div>
         </li>
     <?php endif; ?>
+    <li class="control">
+        <input type="checkbox" name="payment[iugu_save]" id="<?php echo $_code ?>_save" value="1" <?php if($this->getInfoData('iugu_save')): ?> checked="checked"<?php endif; ?> title="<?php echo $this->__('Save credit card') ?>" class="checkbox" /><label for="<?php echo $_code ?>_save"><?php echo $this->__('Save credit card') ?></label>
+    </li>
 </ul>
 <script type="text/javascript">
     //<![CDATA[

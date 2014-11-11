@@ -14,6 +14,7 @@ $installer->startSetup();
 $entity = 'quote_payment';
 $attributes = array(
     'iugu_token'                => array('type' => Varien_Db_Ddl_Table::TYPE_TEXT),
+    'iugu_save'                 => array('type' => Varien_Db_Ddl_Table::TYPE_SMALLINT),
     'installments'              => array('type' => Varien_Db_Ddl_Table::TYPE_SMALLINT),
     'installment_description'   => array('type' => Varien_Db_Ddl_Table::TYPE_VARCHAR),
 );

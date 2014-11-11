@@ -23,3 +23,4 @@
 .iugu-cc-expr-year select.year { width: 72px !important; }
 #advice-validate-iugu-cc-exp-iugu_cc_expiration { white-space: nowrap; }
 #advice-validate-iugu-cc-cvn-iugu_cc_cc_cid { white-space: nowrap; }
+.iugu-payment-method-index .title-buttons .button { position: absolute; right: 0; top: 0; }

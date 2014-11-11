@@ -26,6 +26,7 @@ class Inovarti_Iugu_Model_Cc extends Mage_Payment_Model_Method_Abstract
         $info->setInstallments($data->getInstallments())
             ->setInstallmentDescription($data->getInstallmentDescription())
             ->setIuguToken($data->getIuguToken())
+            ->setIuguSave($data->getIuguSave())
         ;
         return $this;
     }
@@ -54,12 +55,15 @@ class Inovarti_Iugu_Model_Cc extends Mage_Payment_Model_Method_Abstract
 
     protected function _place($payment, $amount)
     {
+        $iugu = Mage::getModel('iugu/api');
         $order = $payment->getOrder();
+
         $items = Mage::helper('iugu')->getItemsFromOrder($payment->getOrder());
         $payer = Mage::helper('iugu')->getPayerInfoFromOrder($payment->getOrder());
 
         $data = new Varien_Object();
         $data->setToken($payment->getIuguToken())
+            ->setMonths($payment->getInstallments())
             ->setEmail($order->getCustomerEmail())
             ->setItems($items)
             ->setPayer($payer)
@@ -74,15 +78,14 @@ class Inovarti_Iugu_Model_Cc extends Mage_Payment_Model_Method_Abstract
         if ($order->getBaseTaxAmount()) {
             $data->setTaxCents($this->formatAmount($order->getBaseTaxAmount()));
         }
-        
-        $iugu = Mage::getModel('iugu/api');
 
+        // Charge
         $result = $iugu->charge($data);
         if (!$result->getSuccess()) {
             Mage::throwException(Mage::helper('iugu')->__('Transaction failed, please try again or contact the card issuing bank.'));
         }
 
-        // iugu info
+        // Set iugu info
         $payment->setIuguInvoiceId($result->getInvoiceId())
             ->setIuguUrl($result->getUrl())
             ->setIuguPdf($result->getPdf())

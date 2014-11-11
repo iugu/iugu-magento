@@ -13,6 +13,7 @@ class Inovarti_Iugu_Model_Source_Cctype extends Mage_Payment_Model_Source_Cctype
 
     public function getTypeByBrand($brand)
     {
+        $brand = strtolower($brand);
         $data = array(
             'visa'          => 'VI',
             'mastercard'    => 'MC',

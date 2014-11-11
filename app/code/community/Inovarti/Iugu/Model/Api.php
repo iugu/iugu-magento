@@ -5,11 +5,8 @@
  * @package    Inovarti_Iugu
  * @author     Suporte <suporte@inovarti.com.br>
  */
-class Inovarti_Iugu_Model_Api
+class Inovarti_Iugu_Model_Api extends Inovarti_Iugu_Model_Api_Abstract
 {
-    const VERSION   = '1';
-    const ENDPOINT  = 'https://api.iugu.com';
-
     const PAYMENT_METHOD_BOLETO = 'bank_slip';
     const PAYMENT_METHOD_CREDIT_CARD = 'credit_card';
 
@@ -20,38 +17,6 @@ class Inovarti_Iugu_Model_Api
     const INVOICE_STATUS_CANCELED           = 'canceled';
     const INVOICE_STATUS_REFUNDED           = 'refunded';
     const INVOICE_STATUS_EXPIRED            = 'expired';
-
-    protected $_apiToken;
-
-    public function __construct()
-    {
-        $this->_apiToken = Mage::helper('iugu')->getApiToken();
-    }
-
-    /**
-     * Set API Token
-     *
-     * @param string $token
-     * @return Inovarti_Iugu_Model_Api
-     */
-    public function setApiToken($token)
-    {
-        $this->_apiToken = $token;
-        return $this;
-    }
-
-    /**
-     * Get API Token
-     *
-     * @return string
-     */
-    public function getApiToken()
-    {
-        if (!$this->_apiToken) {
-            Mage::throwException(Mage::helper('iugu')->__('You need to configure API Token before performing requests.'));
-        }
-        return $this->_apiToken;
-    }
 
     /**
      * Authorize or Authorize and Capture
@@ -68,7 +33,7 @@ class Inovarti_Iugu_Model_Api
     /**
      * Retrieve invoice info
      *
-     * @param int @id
+     * @param string @id
      * @return Varien_Object
      */
     public function fetch($id)
@@ -80,7 +45,7 @@ class Inovarti_Iugu_Model_Api
     /**
      * Refund a previously captured invoice
      *
-     * @param int $id
+     * @param string $id
      * @return Varien_Object
      */
     public function refund($id)
@@ -90,44 +55,77 @@ class Inovarti_Iugu_Model_Api
     }
 
     /**
-     * Send the HTTP request and return an HTTP response object
+     * Add new customer
      *
-     * @param string $url
      * @param Varien_Object $data
-     * @param string $method
      * @return Varien_Object
      */
-    public function request($url, $data=null, $method='GET')
+    public function saveCustomer(Varien_Object $data)
     {
-        $client = new Varien_Http_Client($url, array('timeout'  => 120));
-        $client->setAuth($this->getApiToken());
-        $client->setMethod($method);
-        if (!$data) {
-            $data = new Varien_Object();
-        }
-        if ($method == Zend_Http_Client::POST) {
-            // Fix: items[0] -> items[]
-            $rawData = http_build_query($this->_parseArray($data));
-            $rawData = preg_replace('/%5B[0-9]+%5D/simU', '%5B%5D', $rawData);
-            $client->setRawData($rawData);
-        } else {
-            $client->setParameterGet($this->_parseArray($data));
-        }
-        $response = $client->request();
-        $body = json_decode($response->getBody(), true);
-        $result = $this->_parseObject($body);
-        return $result;
+        $response = $this->request($this->getCustomerUrl(), $data, Zend_Http_Client::POST);
+        return $response;
     }
 
     /**
-     * Retrieve base URL
+     * Retrive customer
      *
-     * @return string
+     * @param string $id
+     * @return Varien_Object
      */
-    public function getBaseUrl()
+    public function getCustomer($id)
     {
-        $url = self::ENDPOINT . '/v' . self::VERSION;
-        return $url;
+        $response = $this->request($this->getCustomerUrl($id));
+        return $response;
+    }
+
+    /**
+     * Add new payment method
+     *
+     * @param Varien_Object $data
+     * @return Varien_Object
+     */
+    public function savePaymentMethod(Varien_Object $data)
+    {
+        $response = $this->request($this->getPaymentMethodUrl($data->getCustomerId()), $data, Zend_Http_Client::POST);
+        return $response;
+    }
+
+    /**
+     * Retrive payment method
+     *
+     * @param string $customerId
+     * @param string $paymentMethodId
+     * @return Varien_Object
+     */
+    public function getPaymentMethod($customerId, $paymentMethodId)
+    {
+        $response = $this->request($this->getPaymentMethodUrl($customerId, $paymentMethodId));
+        return $response;
+    }
+
+    /**
+     * Delete payment method
+     *
+     * @param string $customerId
+     * @param string $paymentMethodId
+     * @return Varien_Object
+     */
+    public function deletePaymentMethod($customerId, $paymentMethodId)
+    {
+        $response = $this->request($this->getPaymentMethodUrl($customerId, $paymentMethodId), null, Zend_Http_Client::DELETE);
+        return $response;
+    }
+
+    /**
+     * Retrive payment method list
+     *
+     * @param string $customerId
+     * @return Varien_Object
+     */
+    public function getPaymentMethodList($customerId)
+    {
+        $response = $this->request($this->getPaymentMethodUrl($customerId));
+        return $response;
     }
 
     /**
@@ -166,68 +164,33 @@ class Inovarti_Iugu_Model_Api
     }
 
     /**
-     * Convert an Array to Varien_Object
+     * Retrive customer URL
      *
-     * @param array
-     * @return Varien_Object
+     * @param string $id
+     * @return string
      */
-    protected function _parseObject(array $data)
+    public function getCustomerUrl($id=null)
     {
-        $object = new Varien_Object();
-        foreach ($data as $key => $value) {
-            if (is_array($value)) {
-                if ($this->_isAssoc($value)) {
-                    $object->setData($key, $this->_parseObject($value));
-                } else {
-                    $items = array();
-                    foreach ($value as $itemKey => $itemValue) {
-                        $items[$itemKey] = $this->_parseObject($itemValue);
-                    }
-                    $object->setData($key, $items);
-                }
-            } else {
-                $object->setData($key, $value);
-            }
+        $url = $this->getBaseUrl() . '/customers';
+        if ($id) {
+            $url .= '/' . $id;
         }
-        return $object;
+        return $url;
     }
 
     /**
-     * Convert a Varien_Object to Array
+     * Retrive payment method URL
      *
-     * @param Varien_Object
-     * @return array
+     * @param string $customerId
+     * @param string $paymentMethodId
+     * @return string
      */
-    protected function _parseArray(Varien_Object $object)
+    public function getPaymentMethodUrl($customerId, $paymentMethodId=null)
     {
-        $array = array();
-        foreach ($object->getData() as $key => $value) {
-            if ($value instanceof Varien_Object) {
-                $array[$key] = $this->_parseArray($value);
-            } elseif (is_array($value)) {
-                $items = array();
-                foreach ($value as $itemKey => $itemValue) {
-                    if ($itemValue instanceof Varien_Object) {
-                        $items[$itemKey] = $this->_parseArray($itemValue);
-                    } else {
-                        $items[$itemKey] = $itemValue;
-                    }
-                }
-                $array[$key] = $items;
-            } else {
-                $array[$key] = $value;
-            }
+        $url = $this->getCustomerUrl($customerId) . '/payment_methods';
+        if ($paymentMethodId) {
+            $url .= '/' . $paymentMethodId;
         }
-        return $array;
-    }
-
-    /**
-     * Check if array is associative or sequential
-     *
-     * @param array $array
-     * @return bool
-     */
-    protected function _isAssoc($array) {
-      return (bool)count(array_filter(array_keys($array), 'is_string'));
+        return $url;
     }
 }

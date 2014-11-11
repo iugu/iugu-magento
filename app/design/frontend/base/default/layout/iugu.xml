@@ -12,7 +12,9 @@
     <!-- Iugu Checkokut Handle -->
     <iugu_checkout_handle>
         <reference name="head">
-            <action method="addCss"><stylesheet>iugu/css/styles.css</stylesheet></action>
+            <action method="addCss">
+                <stylesheet>iugu/css/styles.css</stylesheet>
+            </action>
         </reference>
     </iugu_checkout_handle>
 
@@ -36,7 +38,11 @@
     <iugu_checkout_success_handle>
         <reference name="checkout.success">
             <block type="iugu/checkout_success_payment" name="iugu_checkout_success_payment">
-                <action method="addPaymentRender"><type>iugu_boleto</type><block>iugu/checkout_success_payment_boleto</block><template>iugu/checkout/success/payment/boleto.phtml</template></action>
+                <action method="addPaymentRender">
+                    <type>iugu_boleto</type>
+                    <block>iugu/checkout_success_payment_boleto</block>
+                    <template>iugu/checkout/success/payment/boleto.phtml</template>
+                </action>
             </block>
         </reference>
     </iugu_checkout_success_handle>
@@ -48,4 +54,48 @@
     <onepagecheckout_index_success>
         <update handle="iugu_checkout_success_handle"/>
     </onepagecheckout_index_success>
+
+    <customer_account>
+        <reference name="customer_account_navigation">
+            <action method="addLink" translate="label" module="iugu">
+                <name>iugu_creditcards</name>
+                <path>iugu/payment_method</path>
+                <label>My Credit Cards</label>
+            </action>
+        </reference>
+    </customer_account>
+
+    <iugu_payment_method_index translate="label">
+        <label>Customer My Account Payment Methods</label>
+        <update handle="customer_account"/>
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>iugu/css/styles.css</stylesheet>
+            </action>
+        </reference>
+        <reference name="my.account.wrapper">
+            <block type="iugu/payment_method_list" name="iugu_payment_method_list" template="iugu/payment/method/list.phtml"/>
+        </reference>
+        <reference name="root">
+            <action method="setHeaderTitle" translate="title" module="iugu">
+                <title>My Credit Cards</title>
+            </action>
+        </reference>
+    </iugu_payment_method_index>
+
+    <iugu_payment_method_new>
+        <label>Customer My Account Payment Method Edit</label>
+        <update handle="customer_account"/>
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>iugu/css/styles.css</stylesheet>
+            </action>
+            <action method="addJs">
+                <script>iugu/prototype/validation.js</script>
+            </action>
+        </reference>
+        <reference name="my.account.wrapper">
+            <block type="iugu/payment_method_form" name="iugu_payment_method_form" template="iugu/payment/method/form.phtml"/>
+        </reference>
+    </iugu_payment_method_new>
 </layout>
