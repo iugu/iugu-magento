@@ -33,8 +33,7 @@ class Inovarti_Iugu_Block_Payment_Method_List extends Mage_Core_Block_Template
         if (is_null($this->_items)) {
             $customer = $this->_getSession()->getCustomer();
             if ($customer->getIuguCustomerId()) {
-                $iugu = Mage::getModel('iugu/api');
-                $result = $iugu->getPaymentMethodList($customer->getIuguCustomerId());
+                $result = Mage::getSingleton('iugu/api')->getPaymentMethodList($customer->getIuguCustomerId());
                 if ($result->getItems()) {
                     $this->_items = $result->getItems();
                 }

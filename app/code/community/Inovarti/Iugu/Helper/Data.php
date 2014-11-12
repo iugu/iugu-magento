@@ -91,25 +91,24 @@ class Inovarti_Iugu_Helper_Data extends Mage_Core_Helper_Abstract
         return $payer;
     }
 
-    public function getCustomerId()
+    public function getCustomerId($createIfNotExists = true)
     {
-        $iugu = Mage::getModel('iugu/api');
         $customer = Mage::getSingleton('customer/session')->getCustomer();
         if ($customer->getIuguCustomerId()) {
             // Verify if customer really exists and try create again
-            $result = $iugu->getCustomer($customer->getIuguCustomerId());
+            $result = Mage::getSingleton('iugu/api')->getCustomer($customer->getIuguCustomerId());
             if (!$result->getId()) {
                 $customer->setIuguCustomerId('');
                 $customer->save();
                 return $this->getCustomerId();
             }
-        } else {
+        } elseif ($createIfNotExists) {
             $customerData = new Varien_Object();
             $customerData->setEmail($customer->getEmail());
             $customerData->setName($customer->getName());
             $customerData->setNotes(Mage::app()->getWebsite()->getName());
             try {
-                $result = $iugu->saveCustomer($customerData);
+                $result = Mage::getSingleton('iugu/api')->saveCustomer($customerData);
                 $customer->setIuguCustomerId($result->getId());
                 $customer->save();
             } catch(Exception $e) {

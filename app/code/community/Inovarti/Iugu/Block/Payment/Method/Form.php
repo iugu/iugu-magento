@@ -35,8 +35,7 @@ class Inovarti_Iugu_Block_Payment_Method_Form extends Mage_Core_Block_Template
         if (is_null($this->_paymentMethod)) {
             if ($paymentMethodId = $this->getRequest()->getParam('id')) {
                 $customerId = Mage::helper('iugu')->getCustomerId();
-                $iugu = Mage::getModel('iugu/api');
-                $this->_paymentMethod = $iugu->getPaymentMethod($customerId, $paymentMethodId);
+                $this->_paymentMethod = Mage::getSingleton('iugu/api')->getPaymentMethod($customerId, $paymentMethodId);
             } else {
                 $this->_paymentMethod = new Varien_Object();
             }

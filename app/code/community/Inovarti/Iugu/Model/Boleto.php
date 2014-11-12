@@ -34,7 +34,8 @@ class Inovarti_Iugu_Model_Boleto extends Mage_Payment_Model_Method_Abstract
         $data->setMethod(Inovarti_Iugu_Model_Api::PAYMENT_METHOD_BOLETO)
             ->setEmail($order->getCustomerEmail())
             ->setItems($items)
-            ->setPayer($payer);
+            ->setPayer($payer)
+            ->setNotificationUrl(Mage::getUrl('iugu/notification'));
 
         // Discount
         if ($order->getBaseDiscountAmount()) {
@@ -46,9 +47,7 @@ class Inovarti_Iugu_Model_Boleto extends Mage_Payment_Model_Method_Abstract
             $data->setTaxCents($this->formatAmount($order->getBaseTaxAmount()));
         }
 
-        $iugu = Mage::getModel('iugu/api');
-
-        $result = $iugu->charge($data);
+        $result = Mage::getSingleton('iugu/api')->charge($data);
         if ($result->getErrors()) {
             $messages = array();
             if (is_array($result->getErrors())) {

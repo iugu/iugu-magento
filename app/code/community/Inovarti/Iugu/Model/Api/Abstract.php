@@ -52,13 +52,17 @@ class Inovarti_Iugu_Model_Api_Abstract
      */
     public function request($url, $data=null, $method='GET')
     {
-        $client = new Varien_Http_Client($url, array('timeout'  => 120));
+        $config = array(
+            'adapter' => 'Zend_Http_Client_Adapter_Curl',
+            'timeout' => 120
+        );
+        $client = new Zend_Http_Client($url, $config);
         $client->setAuth($this->getApiToken());
         $client->setMethod($method);
         if (!$data) {
             $data = new Varien_Object();
         }
-        if (in_array($method, array(Zend_Http_Client::POST, Zend_Http_Client::PUT))) {
+        if (in_array($method, array(Zend_Http_Client::POST, Zend_Http_Client::PUT, Zend_Http_Client::DELETE))) {
             // Fix: items[0] -> items[]
             $rawData = http_build_query($this->_parseArray($data));
             $rawData = preg_replace('/%5B[0-9]+%5D/simU', '%5B%5D', $rawData);

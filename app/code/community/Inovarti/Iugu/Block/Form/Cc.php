@@ -8,10 +8,38 @@ class Inovarti_Iugu_Block_Form_Cc extends Mage_Payment_Block_Form_Cc
 {
     const MIN_INSTALLMENT_VALUE = 5;
 
+    protected $_creditCards;
+
     protected function _construct()
     {
         parent::_construct();
         $this->setTemplate('iugu/form/cc.phtml');
+    }
+
+    /**
+     * Retrieve saved credit cards
+     *
+     * @return array
+     */
+    public function getCreditCards()
+    {
+        if (is_null($this->_creditCards)) {
+            $this->_creditCards = array();
+            $customerId = Mage::helper('iugu')->getCustomerId(false);
+            if ($customerId) {
+                $result = Mage::getSingleton('iugu/api')->getPaymentMethodList($customerId);
+                if ($result->getItems()) {
+                    foreach ($result->getItems() as $item) {
+                        if ($item->getItemType() == 'credit_card') {
+                            $data = $item->getData('data');
+                            $data->setId($item->getId());
+                            $this->_creditCards[] = $data;
+                        }
+                    }
+                }
+            }
+        }
+        return $this->_creditCards;
     }
 
     /**

@@ -11,11 +11,10 @@ class Inovarti_Iugu_Adminhtml_Iugu_InvoiceController extends Mage_Adminhtml_Cont
     public function viewAction()
     {
         $id = $this->getRequest()->getParam('id');
-        $iugu = Mage::getModel('iugu/api');
         $result = array();
         $result['success'] = false;
         try {
-            $invoice = $iugu->fetch($id);
+            $invoice = Mage::getSingleton('iugu/api')->fetch($id);
             if ($invoice->getId()) {
                 $result['content_html'] = $this->_getInvoiceHtml($invoice);
                 $result['success'] = true;

@@ -25,7 +25,9 @@ Payment.prototype.save = function() {
 
 Review.prototype._save = Review.prototype.save;
 Review.prototype.save = function() {
-    if (payment.currentMethod == 'iugu_cc') {
+    var skipToken = $(payment.currentMethod+'_iugu_customer_payment_method_id')
+        && $(payment.currentMethod+'_iugu_customer_payment_method_id').value != "";
+    if (payment.currentMethod == 'iugu_cc' && !skipToken) {
         checkout.setLoadWaiting('review');
         Iugu.createPaymentToken($(payment.form), function(data) {
             checkout.setLoadWaiting(false);

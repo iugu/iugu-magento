@@ -51,8 +51,7 @@ class Inovarti_Iugu_Payment_MethodController extends Mage_Core_Controller_Front_
         $data = new Varien_Object($this->getRequest()->getParam('payment', array()));
         $data->setCustomerId(Mage::helper('iugu')->getCustomerId());
         $data->setDescription(Mage::getModel('core/date')->timestamp(time()));
-        $iugu = Mage::getModel('iugu/api');
-        $result = $iugu->savePaymentMethod($data);
+        $result = Mage::getSingleton('iugu/api')->savePaymentMethod($data);
         if ($result->getErrors()) {
             Mage::getSingleton('customer/session')->addError($this->__('An error occurred while saving the credit card.'));
         } else {
@@ -65,8 +64,7 @@ class Inovarti_Iugu_Payment_MethodController extends Mage_Core_Controller_Front_
     {
         if ($paymentMethodId = $this->getRequest()->getParam('id')) {
             $customerId = Mage::helper('iugu')->getCustomerId();
-            $iugu = Mage::getModel('iugu/api');
-            $result = $iugu->deletePaymentMethod($customerId, $paymentMethodId);
+            $result = Mage::getSingleton('iugu/api')->deletePaymentMethod($customerId, $paymentMethodId);
             if ($result->getErrors()) {
                 Mage::getSingleton('customer/session')->addError($this->__('An error occurred while deleting the credit card.'));
             } else {

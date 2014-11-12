@@ -17,6 +17,7 @@
         <fieldsets>
             <sales_convert_quote_payment>
                 <iugu_token><to_order_payment>*</to_order_payment></iugu_token>
+                <iugu_customer_payment_method_id><to_order_payment>*</to_order_payment></iugu_customer_payment_method_id>
                 <iugu_save><to_order_payment>*</to_order_payment></iugu_save>
                 <installments><to_order_payment>*</to_order_payment></installments>
                 <installment_description><to_order_payment>*</to_order_payment></installment_description>

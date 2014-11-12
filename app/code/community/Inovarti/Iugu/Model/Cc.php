@@ -26,6 +26,7 @@ class Inovarti_Iugu_Model_Cc extends Mage_Payment_Model_Method_Abstract
         $info->setInstallments($data->getInstallments())
             ->setInstallmentDescription($data->getInstallmentDescription())
             ->setIuguToken($data->getIuguToken())
+            ->setIuguCustomerPaymentMethodId($data->getIuguCustomerPaymentMethodId())
             ->setIuguSave($data->getIuguSave())
         ;
         return $this;
@@ -39,9 +40,7 @@ class Inovarti_Iugu_Model_Cc extends Mage_Payment_Model_Method_Abstract
 
     public function refund(Varien_Object $payment, $amount)
     {
-        $iugu = Mage::getModel('iugu/api');
-
-        $result = $iugu->refund($payment->getIuguInvoiceId());
+        $result = Mage::getSingleton('iugu/api')->refund($payment->getIuguInvoiceId());
 
         $payment->setTransactionId($payment->getIuguInvoiceId() . '-' . Mage_Sales_Model_Order_Payment_Transaction::TYPE_REFUND)
             ->setParentTransactionId($payment->getIuguInvoiceId())
@@ -55,15 +54,31 @@ class Inovarti_Iugu_Model_Cc extends Mage_Payment_Model_Method_Abstract
 
     protected function _place($payment, $amount)
     {
-        $iugu = Mage::getModel('iugu/api');
         $order = $payment->getOrder();
 
         $items = Mage::helper('iugu')->getItemsFromOrder($payment->getOrder());
         $payer = Mage::helper('iugu')->getPayerInfoFromOrder($payment->getOrder());
 
+        // Save Payment method
+        if (!$payment->getIuguCustomerPaymentMethodId() && $payment->getIuguSave()) {
+            $data = new Varien_Object();
+            $data->setToken($payment->getIuguToken());
+            $data->setCustomerId(Mage::helper('iugu')->getCustomerId());
+            $data->setDescription(Mage::getModel('core/date')->timestamp(time()));
+            $result = Mage::getSingleton('iugu/api')->savePaymentMethod($data);
+            if ($result->getId()) {
+                $payment->setIuguCustomerPaymentMethodId($result->getId());
+            }
+        }
+
+        // Set Charge Data
         $data = new Varien_Object();
-        $data->setToken($payment->getIuguToken())
-            ->setMonths($payment->getInstallments())
+        if ($payment->getIuguCustomerPaymentMethodId()) {
+            $data->setCustomerPaymentMethodId($payment->getIuguCustomerPaymentMethodId());
+        } else {
+            $data->setToken($payment->getIuguToken());
+        }
+        $data->setMonths($payment->getInstallments())
             ->setEmail($order->getCustomerEmail())
             ->setItems($items)
             ->setPayer($payer)
@@ -80,7 +95,7 @@ class Inovarti_Iugu_Model_Cc extends Mage_Payment_Model_Method_Abstract
         }
 
         // Charge
-        $result = $iugu->charge($data);
+        $result = Mage::getSingleton('iugu/api')->charge($data);
         if (!$result->getSuccess()) {
             Mage::throwException(Mage::helper('iugu')->__('Transaction failed, please try again or contact the card issuing bank.'));
         }
