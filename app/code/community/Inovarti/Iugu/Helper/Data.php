@@ -56,7 +56,7 @@ class Inovarti_Iugu_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         // Shipping
-        if ($order->getBaseShippingAmount()) {
+        if ($order->getBaseShippingAmount() > 0) {
             $item = new Varien_Object();
             $item->setDescription($this->__('Shipping & Handling') . ' (' . $order->getShippingDescription() . ')');
             $item->setQuantity(1);
