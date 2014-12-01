@@ -16,7 +16,8 @@ class Inovarti_Iugu_NotificationController extends Mage_Core_Controller_Front_Ac
                 $this->_forward('404');
             }
             $order = Mage::getModel('sales/order')->load($orderId);
-            if ($data['status'] == 'paid') {
+            $iuguInvoice = Mage::getSingleton('iugu/api')->fetch($data['id']);
+            if ($iuguInvoice->getStatus() == Inovarti_Iugu_Model_Api::INVOICE_STATUS_PAID) {
                 if (!$order->canInvoice()) {
                     Mage::throwException($this->__('The order does not allow creating an invoice.'));
                 }
