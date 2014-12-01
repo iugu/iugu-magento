@@ -128,6 +128,8 @@
 </ul>
 <script type="text/javascript">
     //<![CDATA[
+    Iugu.setup();
+
     Event.observe($('<?php echo $_code ?>_installments'), 'change', function(){
         $(this.id.substr(0,this.id.indexOf('_installments')) + '_installment_description').value = this.selectedIndex > 0 ? this.options[this.selectedIndex].text : '';
     });
@@ -184,6 +186,11 @@
     Event.observe($('<?php echo $_code ?>_cc_number'), 'keyup', function(){
         fireEvent(this, 'change');
     });
+
+    Event.observe($('<?php echo $_code ?>_cc_number'), 'focus', function() {
+        fireEvent(this, 'keypress');
+    });
+
 
     // allow only numbers
     $$('input.iugu-only-number').find(function(input){

@@ -15,6 +15,9 @@
             <action method="addCss">
                 <stylesheet>iugu/css/styles.css</stylesheet>
             </action>
+            <action method="addJs">
+                <script>iugu/formatter/formatter.js</script>
+            </action>
         </reference>
     </iugu_checkout_handle>
 
