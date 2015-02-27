@@ -18,7 +18,6 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <comment><![CDATA[<a href="http://iugu.com" target="_blank"><img title="Iugu" alt="Iugu" id="logo_iugu_settings" width="80" /></a><br />
-                    Desenvolvido por <a href="http://www.inovarti.com.br?utm_source=Iugu" target="_blank">Inovarti</a>
                     <script type="text/javascript">
                     document.getElementById('logo_iugu_settings').src = SKIN_URL + 'iugu/images/logo.png';
                     </script>
@@ -72,7 +71,6 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <comment><![CDATA[<a href="http://iugu.com" target="_blank"><img title="Iugu" alt="Iugu" id="logo_iugu_boleto" width="80" /></a><br />
-                    Desenvolvido por <a href="http://www.inovarti.com.br?utm_source=Iugu" target="_blank">Inovarti</a>
                     <script type="text/javascript">
                     document.getElementById('logo_iugu_boleto').src = SKIN_URL + 'iugu/images/logo.png';
                     </script>
@@ -130,7 +128,6 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <comment><![CDATA[<a href="http://iugu.com" target="_blank"><img title="Iugu" alt="Iugu" id="logo_iugu_cc" width="80" /></a><br />
-                    Desenvolvido por <a href="http://www.inovarti.com.br?utm_source=Iugu" target="_blank">Inovarti</a>
                     <script type="text/javascript">
                     document.getElementById('logo_iugu_cc').src = SKIN_URL + 'iugu/images/logo.png';
                     </script>
