@@ -28,6 +28,12 @@ Review.prototype.save = function() {
     var skipToken = $(payment.currentMethod+'_iugu_customer_payment_method_id')
         && $(payment.currentMethod+'_iugu_customer_payment_method_id').value != "";
     if (payment.currentMethod == 'iugu_cc' && !skipToken) {
+        var $installments = $(payment.currentMethod+'_installments');
+        if ($installments.selectedIndex > 0) {
+            $(payment.currentMethod+'_installment_description').value = $installments.options[$installments.selectedIndex].text;
+        } else {
+            $(payment.currentMethod+'_installment_description').value = '';
+        }
         checkout.setLoadWaiting('review');
         Iugu.createPaymentToken($(payment.form), function(data) {
             checkout.setLoadWaiting(false);

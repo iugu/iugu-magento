@@ -16,6 +16,15 @@ class Inovarti_Iugu_Model_Boleto extends Mage_Payment_Model_Method_Abstract
     protected $_canUseForMultishipping      = false;
     protected $_isInitializeNeeded          = true;
 
+    public function assignData($data)
+    {
+        $info = $this->getInfoInstance();
+        $info->setInstallments(null)
+            ->setInstallmentDescription(null)
+        ;
+        return $this;
+    }
+
     public function initialize($paymentAction, $stateObject)
     {
         $payment = $this->getInfoInstance();

@@ -130,10 +130,6 @@
     //<![CDATA[
     Iugu.setup();
 
-    Event.observe($('<?php echo $_code ?>_installments'), 'change', function(){
-        $(this.id.substr(0,this.id.indexOf('_installments')) + '_installment_description').value = this.selectedIndex > 0 ? this.options[this.selectedIndex].text : '';
-    });
-
     Event.observe($('<?php echo $_code ?>_expiration'), 'change', function(){
         var month = ("0" + this.value).slice(-2);
         var year = $(this.id.substr(0,this.id.indexOf('_expiration')) + '_expiration_yr').value;
