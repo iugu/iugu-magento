@@ -60,7 +60,7 @@
 
     <customer_account>
         <reference name="customer_account_navigation">
-            <action method="addLink" translate="label" module="iugu">
+            <action method="addLink" ifconfig="payment/iugu_cc/active" translate="label" module="iugu">
                 <name>iugu_creditcards</name>
                 <path>iugu/payment_method</path>
                 <label>My Credit Cards</label>
