@@ -8,8 +8,11 @@
 ?>
 <?php echo $this->htmlEscape($this->getMethod()->getTitle()) ?>
 
-<?php if($_info = $this->getInfo()): ?>
+<?php if($this->getInfo()): ?>
     <br /><?php echo $this->escapeHtml($this->getInstallmentDescription()) ?>
+    <?php if ($this->getBaseAmountOrdered() != $this->getTotalWithInterest()): ?>
+    <br /><?php echo $this->helper('iugu')->__('Total amount') ?> <?php echo $this->helper('core')->formatPrice($this->getTotalWithInterest(), true); ?>
+    <?php endif ?>
 <?php endif ?>
 
 <?php echo $this->getChildHtml()?>

@@ -9,7 +9,7 @@ class Inovarti_Iugu_Model_Source_Installment
     public function toOptionArray()
     {
         $options = array();
-        for ($i=1; $i <= 12; $i++) {
+        for ($i=2; $i <= 12; $i++) {
             $options[] = array('value' => $i, 'label' => $i . 'x');
         }
         return $options;

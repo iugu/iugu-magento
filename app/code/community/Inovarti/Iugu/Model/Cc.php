@@ -176,6 +176,10 @@ class Inovarti_Iugu_Model_Cc extends Mage_Payment_Model_Method_Abstract
      */
     public function getInterestRate($installments)
     {
+        if ($installments < 2) {
+            return 0;
+        }
+        
         $interestMap = unserialize($this->getConfigData('interest_rate'));
         usort($interestMap, array($this, '_sortInterestRateByInstallments'));
         $interestMap = array_reverse($interestMap, true);

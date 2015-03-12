@@ -36,4 +36,20 @@ class Inovarti_Iugu_Block_Info_Cc extends Mage_Payment_Block_Info
     {
         return $this->getInfo()->getInstallmentDescription();
     }
+
+    /**
+     * @return float
+     */
+    public function getAmountOrdered()
+    {
+        return $this->getInfo()->getBaseAmountOrdered();
+    }
+
+    /**
+     * @return float
+     */
+    public function getTotalWithInterest()
+    {
+        return $this->getInfo()->getIuguTotalWithInterest();
+    }
 }
