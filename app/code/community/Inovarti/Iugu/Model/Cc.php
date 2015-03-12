@@ -6,6 +6,8 @@
  */
 class Inovarti_Iugu_Model_Cc extends Mage_Payment_Model_Method_Abstract
 {
+    const MIN_INSTALLMENT_VALUE = 5;
+
     protected $_code = 'iugu_cc';
 
     protected $_formBlockType = 'iugu/form_cc';
@@ -15,7 +17,8 @@ class Inovarti_Iugu_Model_Cc extends Mage_Payment_Model_Method_Abstract
     protected $_canAuthorize                = true;
     protected $_canCapture                  = true;
     protected $_canRefund                   = true;
-    protected $_canUseForMultishipping 		= false;
+    protected $_canUseForMultishipping      = false;
+    protected $_canUseInternal              = false;
 
     public function assignData($data)
     {
@@ -56,8 +59,19 @@ class Inovarti_Iugu_Model_Cc extends Mage_Payment_Model_Method_Abstract
     {
         $order = $payment->getOrder();
 
-        $items = Mage::helper('iugu')->getItemsFromOrder($payment->getOrder());
         $payer = Mage::helper('iugu')->getPayerInfoFromOrder($payment->getOrder());
+        $items = Mage::helper('iugu')->getItemsFromOrder($payment->getOrder());
+
+        // Verify if needs add interest
+        $interestRate = $this->getInterestRate($payment->getInstallments());
+        $totalWithInterest = $this->calcTotalWithInterest($amount, $interestRate);
+        if ($totalWithInterest - $amount > 0) {
+            $item = new Varien_Object();
+            $item->setDescription(Mage::helper('iugu')->__('Interest'));
+            $item->setQuantity(1);
+            $item->setPriceCents(Mage::helper('iugu')->formatAmount($totalWithInterest - $amount));
+            $items[] = $item;
+        }
 
         // Save Payment method
         if (!$payment->getIuguCustomerPaymentMethodId() && $payment->getIuguSave()) {
@@ -102,6 +116,7 @@ class Inovarti_Iugu_Model_Cc extends Mage_Payment_Model_Method_Abstract
 
         // Set iugu info
         $payment->setIuguInvoiceId($result->getInvoiceId())
+            ->setIuguTotalWithInterest($totalWithInterest)
             ->setIuguUrl($result->getUrl())
             ->setIuguPdf($result->getPdf())
             ->setTransactionId($result->getInvoiceId())
@@ -110,5 +125,100 @@ class Inovarti_Iugu_Model_Cc extends Mage_Payment_Model_Method_Abstract
         ;
 
         return $this;
+    }
+
+    /**
+     * @param float $amount
+     * @return array
+     */
+    public function getInstallmentOptions($amount = null)
+    {
+        $quote = $this->getInfoInstance()->getQuote();
+        if (is_null($amount)) {
+            $amount = $quote->getGrandTotal();
+        }
+
+        $maxInstallments = (int)$this->getConfigData('max_installments');
+        $minInstallmentValue = (float)$this->getConfigData('min_installment_value');
+
+        if ($minInstallmentValue < self::MIN_INSTALLMENT_VALUE) {
+            $minInstallmentValue = self::MIN_INSTALLMENT_VALUE;
+        }
+
+        $installments = floor($amount / $minInstallmentValue);
+        if ($installments > $maxInstallments) {
+            $installments = $maxInstallments;
+        } elseif ($installments < 1) {
+            $installments = 1;
+        }
+
+        $options = array();
+        for ($i=1; $i <= $installments; $i++) {
+            if ($i == 1) {
+                $label = Mage::helper('iugu')->__('Pay in full - %s', $quote->getStore()->formatPrice($amount, false));
+            } else {
+                $interestRate = $this->getInterestRate($i);
+                $installmentAmount = $this->calcInstallmentAmount($amount, $i, $interestRate);
+                if ($interestRate > 0) {
+                    $label = Mage::helper('iugu')->__('%sx - %s with interest', $i, $quote->getStore()->formatPrice($installmentAmount, false));
+                } else {
+                    $label = Mage::helper('iugu')->__('%sx - %s without interest', $i, $quote->getStore()->formatPrice($installmentAmount, false));
+                }
+            }
+            $options[$i] = $label;
+        }
+        return $options;
+    }
+
+    /**
+     * @param int $installments
+     * @return float
+     */
+    public function getInterestRate($installments)
+    {
+        $interestMap = unserialize($this->getConfigData('interest_rate'));
+        usort($interestMap, array($this, '_sortInterestRateByInstallments'));
+        $interestMap = array_reverse($interestMap, true);
+        $interestRate = 0;
+        foreach ($interestMap as $item) {
+            if ($installments <= $item['installments']) {
+                $interestRate = $item['interest'];
+            }
+        }
+        return (float)$interestRate/100;
+    }
+
+    /**
+     * @param float $amount
+     * @param int $installments
+     * @param float $rate
+     * @return float
+     */
+    public function calcInstallmentAmount($amount, $installments, $rate = 0.0)
+    {
+        if ($rate > 0){
+            $result = $this->calcTotalWithInterest($amount, $rate) / $installments;
+        } else {
+            $result = $amount / $installments;
+        }
+        return round($result, 2);
+    }
+
+    /**
+     * @param float $amount
+     * @param float $rate
+     * @return float
+     */
+    public function calcTotalWithInterest($amount, $rate = 0.0)
+    {
+        return $amount + ($amount * $rate);
+    }
+
+    protected function _sortInterestRateByInstallments($a, $b)
+    {
+        if ($a['installments'] == $b['installments']) {
+            return 0;
+        }
+        return ($a['installments'] < $b['installments']) ? -1 : 1;
     }
 }

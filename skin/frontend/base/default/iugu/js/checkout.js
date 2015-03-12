@@ -11,8 +11,14 @@ Payment.prototype.save = function() {
     var validator = new Validation(this.form);
     if (this.validate() && validator.validate()) {
         if (this.currentMethod == 'iugu_cc') {
+            var $installments = $(payment.currentMethod+'_installments');
+            if ($installments.selectedIndex > 0) {
+                $(payment.currentMethod+'_installment_description').value = $installments.options[$installments.selectedIndex].text;
+            } else {
+                $(payment.currentMethod+'_installment_description').value = '';
+            }
             this.iugu_cc_data = {};
-            var fields = ['installments', 'cc_type', 'cc_number', 'cc_owner', 'expiration', 'expiration_yr', 'cc_cid'];
+            var fields = ['installments', 'installment_description', 'cc_type', 'cc_number', 'cc_owner', 'expiration', 'expiration_yr', 'cc_cid'];
             fields.each(function(field){
                 this.iugu_cc_data[field] = $(this.currentMethod+'_'+field).value;
             }.bind(this));
@@ -28,12 +34,6 @@ Review.prototype.save = function() {
     var skipToken = $(payment.currentMethod+'_iugu_customer_payment_method_id')
         && $(payment.currentMethod+'_iugu_customer_payment_method_id').value != "";
     if (payment.currentMethod == 'iugu_cc' && !skipToken) {
-        var $installments = $(payment.currentMethod+'_installments');
-        if ($installments.selectedIndex > 0) {
-            $(payment.currentMethod+'_installment_description').value = $installments.options[$installments.selectedIndex].text;
-        } else {
-            $(payment.currentMethod+'_installment_description').value = '';
-        }
         checkout.setLoadWaiting('review');
         Iugu.createPaymentToken($(payment.form), function(data) {
             checkout.setLoadWaiting(false);

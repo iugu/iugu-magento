@@ -7,15 +7,18 @@
  */
 class Inovarti_Iugu_Helper_Data extends Mage_Core_Helper_Abstract
 {
+    const XML_PATH_SETTINGS_MODE            = 'payment/iugu_settings/mode';
+    const XML_PATH_SETTINGS_ACCOUNT_ID      = 'payment/iugu_settings/account_id';
+
     public function getMode()
     {
-        $mode = Mage::getStoreConfig('payment/iugu_settings/mode');
+        $mode = Mage::getStoreConfig(self::XML_PATH_SETTINGS_MODE);
         return $mode;
     }
 
     public function getAccountId()
     {
-        $accountId = Mage::getStoreConfig('payment/iugu_settings/account_id');
+        $accountId = Mage::getStoreConfig(self::XML_PATH_SETTINGS_ACCOUNT_ID);
         return $accountId;
     }
 

@@ -6,7 +6,6 @@
  */
 class Inovarti_Iugu_Block_Form_Cc extends Mage_Payment_Block_Form_Cc
 {
-    const MIN_INSTALLMENT_VALUE = 5;
 
     protected $_creditCards;
 
@@ -48,38 +47,8 @@ class Inovarti_Iugu_Block_Form_Cc extends Mage_Payment_Block_Form_Cc
      * @return array
      */
     public function getInstallmentsAvailables(){
-        $maxInstallments = (int)Mage::getStoreConfig('payment/iugu_cc/max_installments');
-        $minInstallmentValue = (float)Mage::getStoreConfig('payment/iugu_cc/min_installment_value');
-        $maxInstallmentsWithoutInterest = (int)Mage::getStoreConfig('payment/iugu_cc/max_installments_without_interest');
-        if ($minInstallmentValue < self::MIN_INSTALLMENT_VALUE) {
-            $minInstallmentValue = self::MIN_INSTALLMENT_VALUE;
-        }
 
-        $quote = Mage::helper('checkout')->getQuote();
-        $total = $quote->getGrandTotal();
-
-        $installments = floor($total / $minInstallmentValue);
-        if ($installments > $maxInstallments) {
-            $installments = $maxInstallments;
-        } elseif ($installments < 1) {
-            $installments = 1;
-        }
-
-        $options = array();
-        for ($i=1; $i <= $installments; $i++) {
-            if ($i == 1) {
-                $label = $this->__('Pay in full - %s', $quote->getStore()->formatPrice($total, false));
-            } else {
-                $installmentAmount = round($total/$i, 2);
-                if ($i > $maxInstallmentsWithoutInterest) {
-                    $label = $this->__('%sx - %s with interest', $i, $quote->getStore()->formatPrice($installmentAmount, false));
-                } else {
-                    $label = $this->__('%sx - %s without interest', $i, $quote->getStore()->formatPrice($installmentAmount, false));
-                }
-            }
-            $options[$i] = $label;
-        }
-        return $options;
+        return $this->getMethod()->getInstallmentOptions();
     }
 
     /**

@@ -15,7 +15,6 @@
             <action method="addJs"><script>prototype/window.js</script></action>
             <action method="addItem"><type>js_css</type><name>prototype/windows/themes/default.css</name></action>
             <action method="addCss"><name>lib/prototype/windows/themes/magento.css</name></action>
-
             <action method="addCss"><name>iugu/css/styles.css</name></action>
             <action method="addJs"><script>iugu/iugu.js</script></action>
         </reference>
@@ -51,7 +50,7 @@
 
     <adminhtml_iugu_invoice_view>
         <update handle="popup"/>
-        <remove name="footer" />
+        <remove name="footer"/>
         <reference name="head">
             <action method="addCss"><name>iugu/css/styles.css</name></action>
         </reference>
