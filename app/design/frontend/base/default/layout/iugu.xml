@@ -19,23 +19,50 @@
                 <script>iugu/formatter/formatter.js</script>
             </action>
         </reference>
+				<reference name="before_body_end">
+					<block type="core/template" name="iugu_checkout_js">
+						<action method="setTemplate" ifconfig="payment/iugu_cc/active">
+							<template>iugu/checkout/payment/js.phtml</template>
+						</action>
+					</block>
+				</reference>
     </iugu_checkout_handle>
 
-    <checkout_onepage_index>
-        <update handle="iugu_checkout_handle"/>
-    </checkout_onepage_index>
+		<checkout_onepage_index>
+			<update handle="iugu_checkout_handle"/>
+		</checkout_onepage_index>
 
-    <onepagecheckout_index_index>
-        <update handle="iugu_checkout_handle"/>
-    </onepagecheckout_index_index>
+		<onepagecheckout_index_index>
+			<update handle="iugu_checkout_handle"/>
+		</onepagecheckout_index_index>
 
-    <opc_index_index>
-        <update handle="iugu_checkout_handle"/>
-    </opc_index_index>
+		<onestepcheckout_index_index>
+			<update handle="iugu_checkout_handle"/>
+		</onestepcheckout_index_index>
 
-    <aw_onestepcheckout_index_index>
-        <update handle="iugu_checkout_handle"/>
-    </aw_onestepcheckout_index_index>
+		<typostores_onestepcheckout_index_index>
+			<update handle="iugu_checkout_handle"/>
+		</typostores_onestepcheckout_index_index>
+
+		<opc_index_index>
+			<update handle="iugu_checkout_handle"/>
+		</opc_index_index>
+
+		<aw_onestepcheckout_index_index>
+			<update handle="iugu_checkout_handle"/>
+		</aw_onestepcheckout_index_index>
+
+		<idecheckoutvm_index_index>
+			<update handle="iugu_checkout_handle"/>
+		</idecheckoutvm_index_index>
+
+		<checkoutsimplificado_index_index>
+			<update handle="iugu_checkout_handle"/>
+		</checkoutsimplificado_index_index>
+
+		<firecheckout_index_index>
+			<update handle="iugu_checkout_handle"/>
+		</firecheckout_index_index>
 
     <!-- Iugu Checkout Handle -->
     <iugu_checkout_success_handle>
