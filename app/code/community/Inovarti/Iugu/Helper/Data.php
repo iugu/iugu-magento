@@ -74,9 +74,14 @@ class Inovarti_Iugu_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $billingAddress = $order->getBillingAddress();
 
+        //payer.address can't be blank fixed, we use 4 street fields, so our district is the 4, if you use less, i haven't tested 
         $address = new Varien_Object();
         $address->setStreet($billingAddress->getStreet(1));
         $address->setNumber($billingAddress->getStreet(2));
+        if (!empty($billingAddress->getStreet(4)))
+            $address->setDistrict($billingAddress->getStreet(4));
+        else
+            $address->setDistrict($billingAddress->getStreet(3));
         $address->setCity($billingAddress->getCity());
         $address->setState($billingAddress->getRegionCode());
         $address->setCountry('Brasil');
