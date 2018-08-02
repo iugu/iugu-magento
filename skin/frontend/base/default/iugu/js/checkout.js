@@ -44,6 +44,11 @@ else {
 			var validator = new Validation(this.form);
 			if (this.validate() && validator.validate()) {
 					if (this.currentMethod == 'iugu_cc') {
+							if($("iugu_cc_cc_owner").value.trim().split(" ").length < 2) { 
+								alert("Preencha nome e sobrenome"); 
+								Form.Element.select($("iugu_cc_cc_owner")); 
+								return; 
+							} 
 							var $installments = $(payment.currentMethod+'_installments');
 							if ($installments.selectedIndex > 0) {
 									$(payment.currentMethod+'_installment_description').value = $installments.options[$installments.selectedIndex].text;
