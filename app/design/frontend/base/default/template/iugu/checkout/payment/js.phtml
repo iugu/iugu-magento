@@ -4,6 +4,9 @@
  * @package     Inovarti_Iugu
  * @copyright   Copyright (c) 2014 Inovarti. (http://www.inovarti.com.br)
  */
+if(!defined('IUGU_JS_INCLUDED'))
+{
+	define('IUGU_JS_INCLUDED', true);
 ?>
 <script type="text/javascript" src="https://js.iugu.com/v2"></script>
 <script type="text/javascript" src="<?php echo $this->getJsUrl('iugu/prototype/validation.js') ?>"></script>
@@ -15,3 +18,6 @@
     Iugu.setTestMode(true);
     <?php endif ?>
 </script>
+<?php
+}
+?>
