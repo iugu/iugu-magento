@@ -10,7 +10,7 @@
 <config>
     <modules>
         <Inovarti_Iugu>
-            <version>0.1.2</version>
+            <version>0.1.3</version>
         </Inovarti_Iugu>
     </modules>
     <global>
@@ -21,6 +21,8 @@
                 <iugu_save><to_order_payment>*</to_order_payment></iugu_save>
                 <installments><to_order_payment>*</to_order_payment></installments>
                 <installment_description><to_order_payment>*</to_order_payment></installment_description>
+                <iugu_boleto_name><to_order_payment>*</to_order_payment></iugu_boleto_name>
+                <iugu_boleto_cpf_cnpj><to_order_payment>*</to_order_payment></iugu_boleto_cpf_cnpj>
             </sales_convert_quote_payment>
         </fieldsets>
         <models>

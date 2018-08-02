@@ -22,4 +22,10 @@ class Inovarti_Iugu_Block_Form_Boleto extends Mage_Payment_Block_Form
         }
         return $this->_instructions;
     }
+
+    public function getName()
+    {
+        $customer = Mage::getSingleton('customer/session')->getCustomer();
+        return implode(' ', array($customer->getFirstname(), $customer->getMiddlename(), $customer->getLastname()));
+    }
 }

@@ -21,6 +21,8 @@ class Inovarti_Iugu_Model_Boleto extends Mage_Payment_Model_Method_Abstract
         $info = $this->getInfoInstance();
         $info->setInstallments(null)
             ->setInstallmentDescription(null)
+            ->setIuguBoletoName($data->getIuguBoletoName())
+            ->setIuguBoletoCpfCnpj($data->getIuguBoletoCpfCnpj())
         ;
         return $this;
     }
@@ -38,6 +40,8 @@ class Inovarti_Iugu_Model_Boleto extends Mage_Payment_Model_Method_Abstract
         $order = $payment->getOrder();
         $items = Mage::helper('iugu')->getItemsFromOrder($payment->getOrder());
         $payer = Mage::helper('iugu')->getPayerInfoFromOrder($payment->getOrder());
+        $payer->setName($payment->getIuguBoletoName());
+        $payer->setCpfCnpj($payment->getIuguBoletoCpfCnpj());
 
         $data = new Varien_Object();
         $data->setMethod(Inovarti_Iugu_Model_Api::PAYMENT_METHOD_BOLETO)

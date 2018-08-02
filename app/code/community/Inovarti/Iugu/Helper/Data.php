@@ -83,8 +83,6 @@ class Inovarti_Iugu_Helper_Data extends Mage_Core_Helper_Abstract
         $address->setZipCode(Zend_Filter::filterStatic($billingAddress->getPostcode(), 'Digits'));
 
         $payer = new Varien_Object();
-        $payer->setCpfCnpj($order->getCustomerTaxvat());
-        $payer->setName($order->getCustomerName());
         $payer->setPhonePrefix($this->getPhonePrefix($billingAddress->getTelephone()));
         $payer->setPhone($this->getPhone($billingAddress->getTelephone()));
         $payer->setEmail($order->getCustomerEmail());
