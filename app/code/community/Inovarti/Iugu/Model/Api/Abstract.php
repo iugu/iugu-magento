@@ -62,6 +62,11 @@ class Inovarti_Iugu_Model_Api_Abstract
         if (!$data) {
             $data = new Varien_Object();
         }
+        else
+        {
+            $data['client_name'] =  'plugin-iugu-magento1osc';
+            $data['client_version'] = (string)Mage::getConfig()->getNode('modules/Inovarti_Iugu/version');
+        }
         if (in_array($method, array(Zend_Http_Client::POST, Zend_Http_Client::PUT, Zend_Http_Client::DELETE))) {
             // Fix: items[0] -> items[]
             $rawData = http_build_query($this->_parseArray($data));
