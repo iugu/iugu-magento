@@ -76,6 +76,10 @@ else {
 							  return;
 						  }
 						}
+						else {
+							alert("É obrigatório selecionar pessoa física ou jurídica para registro do boleto");
+							return;
+						}
 					} else {
 							this.iugu_cc_data = null; //clear data
 					}

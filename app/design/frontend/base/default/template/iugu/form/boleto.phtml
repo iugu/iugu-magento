@@ -8,7 +8,7 @@
 ?>
 <?php $_code=$this->getMethodCode() ?>
 <ul class="form-list iugu-payment-icons">
-    <li class="<?php echo $_typeCode ?>">
+    <li>
         <span><?php echo $this->__('Boleto') ?></span>
     </li>
 </ul>
@@ -16,7 +16,7 @@
     <li>
 
 			<div class="input-box iugu-boleto-tipo-pessoa">
-				<label for="tipo_fisica">Pessoa física<input type="radio" name="tipo_pessoa" id="tipo_fisica" checked="checked"></label>
+				<label for="tipo_fisica">Pessoa física<input type="radio" name="tipo_pessoa" id="tipo_fisica"></label>
 				<label for="tipo_juridica">Pessoa jurídica<input type="radio" name="tipo_pessoa" id="tipo_juridica"></label>
 			</div>
 
@@ -25,7 +25,7 @@
 
 			<label for="<?php echo $_code ?>_name" id="label-iugu-boleto-nome" class="required"><em>*</em><?php echo $this->__('Name for bankslip registry') ?></label>
 			<div class="input-box">
-				<input type="text" id="<?php echo $_code ?>_name" name="payment[iugu_boleto_name]" title="<?php echo $this->__('Name for bankslip registry') ?>" class="input-text required-entry" autocomplete="off" value="<?php if($this->getName()) echo $this->getName(); ?>" />
+				<input type="text" id="<?php echo $_code ?>_name" name="payment[iugu_boleto_name]" title="<?php echo $this->__('Name for bankslip registry') ?>" class="input-text required-entry" autocomplete="off" />
 			</div>
 
     </li>
@@ -33,19 +33,18 @@
 
 			<label for="<?php echo $_code ?>_cpf_cnpj" id="label-iugu-boleto-tipo-pessoa" class="required"><em>*</em><?php echo $this->__('CPF for bankslip registry') ?></label>
 			<div class="input-box">
-				<input type="text" id="<?php echo $_code ?>_cpf_cnpj" name="payment[iugu_boleto_cpf_cnpj]" title="<?php echo $this->__('CPF for bankslip registry') ?>" class="input-text required-entry" autocomplete="off" value="" />
+				<input type="text" id="<?php echo $_code ?>_cpf_cnpj" name="payment[iugu_boleto_cpf_cnpj]" title="<?php echo $this->__('CPF for bankslip registry') ?>" class="input-text required-entry" autocomplete="off" />
 			</div>
 
 		</li>
 </ul>
 <script>
 
-	$('p_method_iugu_boleto').checked = false;
 	var nome_empresa_field = document.getElementById('<?php echo $_code ?>_name');
 	var cpf_cnpj_field = document.getElementById('<?php echo $_code ?>_cpf_cnpj');
 	var formatted = new Formatter(cpf_cnpj_field, { 'pattern': '{{999}}.{{999}}.{{999}}-{{99}}', 'persistent': false });
 
-  $('tipo_fisica').observe('click', function() { 
+  $('tipo_fisica').observe('change', function() { 
   	$('label-iugu-boleto-nome').update("<?php echo $this->__('Name for bankslip registry') ?>");
   	$('label-iugu-boleto-tipo-pessoa').update("<?php echo $this->__('CPF for bankslip registry') ?>");
   	nome_empresa_field.value = ''; 
@@ -53,7 +52,7 @@
   	formatted.resetPattern('{{999}}.{{999}}.{{999}}-{{99}}');
   });
 
-  $('tipo_juridica').observe('click', function() { 
+  $('tipo_juridica').observe('change', function() { 
   	$('label-iugu-boleto-nome').update("<?php echo $this->__('Company for bankslip registry') ?>");
   	$('label-iugu-boleto-tipo-pessoa').update("<?php echo $this->__('CNPJ for bankslip registry') ?>");
   	nome_empresa_field.value = ''; 
@@ -61,6 +60,13 @@
   	formatted.resetPattern('{{99}}.{{999}}.{{999}}/{{9999}}-{{99}}'); 
 	});
 
+  <?php echo 'var nome_razaosocial = "'.$this->getName().'"; var cpf_cnpj = "'.$this->getCpfCnpj().'";'; ?>
+  if(cpf_cnpj.length == 14)
+    $("tipo_fisica").click();
+  else if(cpf_cnpj.length == 18)
+    $("tipo_juridica").click();
+  $("<?php echo $_code ?>_name").value = nome_razaosocial;
+  $("<?php echo $_code ?>_cpf_cnpj").value = cpf_cnpj;
 
 
 </script>
