@@ -15,6 +15,7 @@ class Inovarti_Iugu_Model_Boleto extends Mage_Payment_Model_Method_Abstract
     protected $_isGateway                   = true;
     protected $_canUseForMultishipping      = false;
     protected $_isInitializeNeeded          = true;
+    protected $_canUseInternal              = false;
 
     public function assignData($data)
     {
