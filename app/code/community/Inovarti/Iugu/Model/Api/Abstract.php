@@ -65,7 +65,8 @@ class Inovarti_Iugu_Model_Api_Abstract
         else
         {
             $data['client_name'] =  'plugin-iugu-magento1';
-            $data['client_version'] = (string)Mage::getConfig()->getNode('modules/Inovarti_Iugu/version');
+            $data['client_version'] = '1.0.1';
+            //$data['client_version'] = (string)Mage::getConfig()->getNode('modules/Inovarti_Iugu/version');
         }
         if (in_array($method, array(Zend_Http_Client::POST, Zend_Http_Client::PUT, Zend_Http_Client::DELETE))) {
             // Fix: items[0] -> items[]
