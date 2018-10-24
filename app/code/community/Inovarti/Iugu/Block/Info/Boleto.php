@@ -21,7 +21,7 @@ class Inovarti_Iugu_Block_Info_Boleto extends Mage_Payment_Block_Info
         return $this->getInfo()->getIuguInvoiceId();
     }
 
-   /**
+    /**
      * @return string
      */
     public function getInvoiceUrl()

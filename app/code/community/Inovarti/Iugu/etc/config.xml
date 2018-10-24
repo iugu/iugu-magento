@@ -157,6 +157,7 @@
                 <active>0</active>
                 <model>iugu/boleto</model>
                 <title>Boleto Bancário</title>
+                <due_date>3</due_date>
                 <payment_action>charge</payment_action>
                 <allowspecific>0</allowspecific>
                 <sort_order>1</sort_order>
