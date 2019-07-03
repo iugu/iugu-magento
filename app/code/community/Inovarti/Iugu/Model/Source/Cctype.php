@@ -8,7 +8,7 @@ class Inovarti_Iugu_Model_Source_Cctype extends Mage_Payment_Model_Source_Cctype
 {
     public function getAllowedTypes()
     {
-        return array('VI', 'MC', 'AE', 'DC');
+        return array('VI', 'MC', 'AE', 'DC', 'EL');
     }
 
     public function getTypeByBrand($brand)
@@ -19,6 +19,7 @@ class Inovarti_Iugu_Model_Source_Cctype extends Mage_Payment_Model_Source_Cctype
             'mastercard'    => 'MC',
             'amex'          => 'AE',
             'diners'        => 'DC',
+            'elo'           => 'EL',
         );
 
         $type = isset($data[$brand]) ? $data[$brand] : null;
