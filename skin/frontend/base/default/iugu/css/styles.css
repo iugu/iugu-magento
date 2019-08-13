@@ -11,6 +11,8 @@
 .iugu-payment-icons li.AE.on { background-position: 0 -96px; }
 .iugu-payment-icons li.DC { background-position: -51px -128px; }
 .iugu-payment-icons li.DC.on { background-position: 0 -128px; }
+.iugu-payment-icons li.EL { background-position: -51px -160px; }
+.iugu-payment-icons li.EL.on { background-position: 0 -160px; }
 .iugu-cvv { position: relative; }
 .iugu-cvv input.cvv { width: 4em !important; }
 .iugu-cvv-tool-tip { position: absolute; display: inline-block; left: 5em; top: 0; }

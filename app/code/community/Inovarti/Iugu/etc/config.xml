@@ -69,6 +69,11 @@
                         <name>Diners Club</name>
                         <order>60</order>
                     </DC>
+                    <EL>
+                        <code>EL</code>
+                        <name>Elo</name>
+                        <order>100</order>
+                    </EL>
                 </types>
             </cc>
             <groups>
@@ -167,7 +172,7 @@
                 <model>iugu/cc</model>
                 <title>Cartão de Crédito</title>
                 <order_status>processing</order_status>
-                <cctypes>VI,MC,AE,DC</cctypes>
+                <cctypes>VI,MC,AE,DC,EL</cctypes>
                 <max_installments>12</max_installments>
                 <min_installment_value>20</min_installment_value>
                 <interest_rate>a:11:{s:18:"_1425059837819_819";a:2:{s:12:"installments";s:1:"2";s:8:"interest";s:1:"3";}s:18:"_1425061599555_555";a:2:{s:12:"installments";s:1:"3";s:8:"interest";s:1:"4";}s:18:"_1425061652102_102";a:2:{s:12:"installments";s:1:"4";s:8:"interest";s:1:"5";}s:18:"_1425061680768_768";a:2:{s:12:"installments";s:1:"5";s:8:"interest";s:1:"6";}s:18:"_1425061694605_605";a:2:{s:12:"installments";s:1:"6";s:8:"interest";s:1:"8";}s:18:"_1425061737435_435";a:2:{s:12:"installments";s:1:"7";s:8:"interest";s:1:"9";}s:18:"_1425061745117_117";a:2:{s:12:"installments";s:1:"8";s:8:"interest";s:2:"10";}s:18:"_1425061751981_981";a:2:{s:12:"installments";s:1:"9";s:8:"interest";s:2:"11";}s:17:"_1425061758055_55";a:2:{s:12:"installments";s:2:"10";s:8:"interest";s:2:"13";}s:18:"_1425061764547_547";a:2:{s:12:"installments";s:2:"11";s:8:"interest";s:2:"14";}s:18:"_1425061770589_589";a:2:{s:12:"installments";s:2:"12";s:8:"interest";s:2:"15";}}</interest_rate>
