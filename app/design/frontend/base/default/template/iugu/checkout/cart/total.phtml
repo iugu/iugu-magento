@@ -1,9 +1,0 @@
-<?php $_colspan = $this->helper('tax')->displayCartBothPrices() ? 5 : 3; ?>
-<tr>
-    <td class="a-right" colspan="<?php echo $_colspan; ?>">
-        <strong><?php echo $this->helper('iugu')->__('Total amount') ?></strong>
-    </td>
-    <td class="a-right last">
-        <strong><?php echo $this->helper('checkout')->formatPrice($this->getAmount()); ?></strong>
-    </td>
-</tr>
